@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Closer Documentation</title>
+        <link rel="stylesheet" href="css/base.css" />
+        <script type="text/javascript" src="js/MathJax.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 id="Task Closer-documentation">Task Closer Documentation</h1>
+            <hr>
+            <p>Thank you for purchasing Task Closer. If you have any questions that are beyond the scope of this help file, please feel free to email via my user page contact form <a href="http://codecanyon.net/user/codeniner">here</a>.</p>
+            <hr>
+            <p>
+                <div class="toc">
+                    <ul>
+                        <li><a href="#server-requirements">Server Requirements</a></li>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#upgrading">Upgrading</a></li>
+                        <li><a href="#cronjobs">Cronjobs</a></li>
+                        <li><a href="#configuration">Configuration</a></li>
+                        <li><a href="#key-aspects">Key Aspects</a></li>
+                        <li><a href="#using-Task Closer">Using Task Closer</a></li>
+                        <li><a href="#translating">Translating</a></li>
+                    <ul>
+                </div>
+            </p>
+            <hr>
+
+            <h2 id="server-requirements">Server Requirements</h2>
+            <p>To run Task Closer your hosting server must support the following:</p>
+            <blockquote>
+                PHP version 5.4 or greater;<br>
+                MySQL version 5.x or greater;<br>
+                PHP PDO MYSQL extension;<br>
+                PHP IMAP extension (for tickets autoimport);<br>
+                PHP FSOCKOPEN extenstion (for service monitoring);<br>
+                Cronjob (for automated tasks like email ticket and service monitoring).
+            </blockquote>
+            <p>Task Closer will run on almost all hosts, if monitoring doesn’t work contact your hosting provider for enabling php_fsockopen.</p>
+            <p>We strongly suggest that you enable SSL on your web server if you are going tu use the credentials manager feature.</p>
+
+
+            <h2 id="installation">Installation</h2>
+            <p>Folow these steps to install Task Closer:</p>
+            <h4 id="step-1-upload-files">STEP 1. Upload Files</h4>
+            <p>Connect to your web server with your favorite FTP client (ie. Filezilla) and upload the contents of the ‘upload’ folder.</p>
+            <h4 id="step-2-create-the-database">STEP 2. Create the Database</h4>
+            <p>Create a new MySQL database using your host’s control panel.</p>
+            <h4 id="step-3-run-the-installation-script">STEP 3. Run the Installation Script</h4>
+            <p>Point a web browser to your domain plus “/install” (example <a href="http://www.my-domain.com/install">http://www.my-domain.com/install</a>). Enter your MySQL database configuration and enter the authentication details to create your first admin account. Click “Continue” to proceed to the next step. <br>
+            <img src="http://demos.neroit.com/docs/images/installer.png" alt="enter image description here" title=""></p>
+            <p>If the database connection was successful the following screen will appear. Click “Install” to complete the installation. <br>
+            <img src="http://demos.neroit.com/docs/images/installer1.png" alt="enter image description here" title=""></p>
+            <h4 id="step-4-delete-install-directory">STEP 4. Delete ‘install’ Directory</h4>
+            <p>Using your FTP client, delete the ‘install’ folder from your web server.</p>
+            <p><strong>To access Task Closer point your browser to your installation domain and login with the credentials provided during installation.</strong></p>
+            <p><b>Notice:</b> The installer needs to have permission to create the "config.php" file in the root directory of the installation.</p>
+
+
+            <h2 id="upgrading">Upgrading</h2>
+            <blockquote><b>Make a Full Backup - We cannot stress enough how important it is to *always* take a full backup before attempting any kind of upgrade. A full backup should be taken of both the Task Closer files and the database.</b></blockquote>
+            <br><br>
+            <p><b>Follow these steps to upgrade Task Closer</b></p>
+            <h4 id="step-1-download">STEP 1. Download</h4>
+            <p>Download the new version and extract with your favorite file-archiver.</p>
+            <h4 id="step-2-backup">STEP 2. Backup</h4>
+            <p>Backup all your files and your database. <br>
+            You can use a FTP client to download all the files from your web server to your local computer. <br>
+            For the database backup use the tools provided in the admin panel for your hosting account (usually PhpMyAdmin).</p>
+            <h4 id="step-3-upload">STEP 3. Upload</h4>
+            <p>Upload the contents of the ‘upload’ folder to your web server with your favorite FTP client, overwriting all the files. <br>
+            If you have made any custom modifications to Task Closer files, these will be overwritten.</p>
+            <h4 id="step-4-run-the-upgrade-script">STEP 4. Run the Upgrade Script</h4>
+            <p>Point a web browser to your installation plus “/install/upgrade.php” (example <a href="http://www.my-domain.com/install/upgrade.php">http://www.my-domain.com/install/upgrade.php</a>). This script will update the database to the required version.</p>
+            <h4 id="step-4-delete-install-directory-1">STEP 4. Delete ‘install’ Directory</h4>
+            <p>Using your FTP client delete the ‘install’ directory from your web server. </p>
+
+
+            <h2 id="cronjobs">Cronjobs</h2>
+            <p><strong>To automatically import tickets from your IMAP mailbox you need to set the following cron job:</strong> <br>
+            <em>This cron job will check your IMAP account every 5 minutes for new tickets.</em></p>
+            <pre><code>*/5 * * * * GET http://[replace with your url]/crons/tickets.php</code></pre>
+            <p><strong>For service monitoring to work you need to set the following cron job:</strong> <br>
+            <em>This cron job will run service monitoring tasks on all configured hosts every 5 minutes.</em></p>
+            <pre><code>*/5 * * * * GET http://[replace with your url]/crons/monitoring.php</code></pre>
+
+
+            <h2 id="configuration">Configuration</h2>
+            <p>After installation go to System &gt; System Settings to configure Task Closer.</p>
+            <h4 id="general-settings">General Settings</h4>
+            <p>Go to ‘General’ tab to set your company info, asset and license tag prefix, records to display per page in tables and a few other tweaks. <br>
+            <img src="http://demos.neroit.com/docs/images/settings.png" alt="enter image description here" title=""></p>
+            <h4 id="email-settings">Email Settings</h4>
+            <p>Go to ‘Email Settings’ tab to configure your mail server. <br>
+            By default the app uses PHP mail to send mail. <br>
+            You can configure a SMTP server if required. <br>
+            <img src="http://demos.neroit.com/docs/images/settings1.png" alt="enter image description here" title=""></p>
+            <h4 id="sms-settings">SMS Settings</h4>
+            <p>Service monitoring can send SMS alerts for enabled checks. <br>
+            Go to SMS Settings tab to configure your SMS service provider.  <br>
+            Task Closer currently supports Clickatell and SMS Global.  <br>
+            You need to have an account with API access at one of this provider. <br>
+            <img src="http://demos.neroit.com/docs/images/settings2.png" alt="enter image description here" title=""></p>
+            <h4 id="notification-templates">Notification Templates</h4>
+            <p>In ‘Notification Templates’ tab you can customize the email and SMS templates Task Closer sends to users or admins. <br>
+            Click on any notification to edit it’s content. <br>
+            *SMS notifications are only used for monitoring alerts.</p>
+            <h4 id="tickets-auto-import">Tickets auto-import</h4>
+            <p>Task Closer can automatically create tickets from an email message. <br>
+            Go to ‘Tickets’ tab and add your IMAP mailbox authentication info. <br>
+            You need to configure the imap.php cron job for this to work.  <br>
+            Each time the imap.php cron job runs it will covert any message found in ‘Inbox’ and purge that IMAP folder.</p>
+            <h4 id="cron-jobs">Cron Jobs</h4>
+            <p>In the ‘Cron Jobs’ tab you will find the required information on how to set the required cron jobs for Task Closer to work properly. <br>
+            Ticket auto-import requires the <strong>tickets.php</strong> cron job. <br>
+            Service monitoring and alerting requires the <strong>monitoring.php</strong> cron job.</p>
+
+
+            <h2 id="key-aspects">Key Aspects</h2>
+            <h4 id="admins-clients-users">ADMINS, CLIENTS &amp; USERS</h4>
+            <p><strong>ADMINS</strong> can log in, have full access to the system and can create or edit other admins. <br>
+            <strong>USERS</strong> can log în to the user panel, all user entities must be associated with a client, a user has access to all the information within the associated client. <br>
+            <strong>CLIENTS</strong> cannot log in, can have multiple users that can log in to the user panel.</p>
+            <p><em>Example Let’s say that you are managing IT for Client Inc, within this client you add two users: Sarah from accounting and John from marketing, they both can access Task Closer to: submit tickets, view their company IT inventory and view work logs.</em></p>
+            <h4 id="customizable-data">CUSTOMIZABLE DATA</h4>
+            <p>In ‘System’ you can define the following data objects that will help you organize your data. <br>
+            You can define objects like asset categories, license categories, status labels, manufacturers, asset models and suppliers. You will, later, use this objects to help you quickly create assets or licenses.</p>
+            <h4 id="assets">ASSETS</h4>
+            <p>Overview of all added assets. Here you can add, edit and delete your assets. <br>
+            Click on any asset to see or edit it’s details, work log through tasks, manage credentials and assign licenses.</p>
+            <h4 id="licenses">LICENSES</h4>
+            <p>Overview of all added licenses. Here you can add, edit and delete your licenses. <br>
+            Click on any license to see it’s details and assign assets.</p>
+            <h4 id="projects">PROJECTS</h4>
+            <p>Overview of all your projects. Here you can add, edit and delete projects. <br>
+            Click on any project to see it’s details, add notes, assign issues, upload files, etc. <br>
+            Use the issues board to visualiza and plan your work (Kanban Board).</p>
+            <h4 id="tickets">TICKETS</h4>
+            <p>Using tickets in Task Closer is very easy, you can create new tickets manually or import them automatically from an IMAP mailbox. <br>
+            You can associate tickets to clients, users, admins and assets, this will allow you to track your work and report to your clients very easy. <br>
+            Tickets can have one of the following states: Open, In Progress, Answered, Reopened or Closed.</p>
+            <h4 id="tasks">ISSUES</h4>
+            <p>Issues allow you to manage, track and plan your work. <br>
+            You can associate issues with objects like projects, assets and/or clients, this will allow you to track your work and report yo your clients very easy. <br>
+            Issues can have one of the following state: To Do, In Progress, Done. <br>
+            Issues are can be categorized by type: Task, Bug, Maintenance, Improvement, New Feature.
+            Use “Time Spent” option to track how much time you have worked on a issue.</p>
+            <h4 id="monitoring">MONITORING</h4>
+            <p>Here you can add hosts for service monitoring. <br>
+            Click on any host to add checks view current status and assign people to receive notifications. <br>
+            You can assign multiple checks for one host. For example for host SERVER1 you can add a check to monitor the MySQL server and a check to monitor the web server.</p>
+            <h4 id="reports">REPORTS</h4>
+            <p>Use this to generate reports for your clients. <br>
+            <strong>Timesheet</strong> Generate a report with all the logged work within the given period for the selected client. <br>
+            <strong>Inventory</strong> Generate a report with all assets and licenses for the selected client. <br>
+            <strong>Timesheet with Inventory</strong> Generate a report with Timesheet + Inventory.</p>
+
+
+
+            <h2 id="using-Task Closer">Using Task Closer</h2>
+            <p><img src="http://demos.neroit.com/docs/images/using1.png" alt="enter image description here" title=""></p>
+            <ol>
+            <li><strong>Quick Actions</strong> Provides shortcuts to quickly create new asset, license, client, task or ticket.</li>
+            <li><strong>New <em>Object</em></strong> Use this button to create new <em>objects</em>.</li>
+            <li><strong>Action Icons</strong> On every table row, depending on the objects listed these can be delete, edit or view.</li>
+            </ol>
+            <p><img src="http://demos.neroit.com/docs/images/using2.png" alt="enter image description here" title=""></p>
+            <p>Objects like Clients, Assets or Licenses have a mini dashboard (5) with detailed information. <br>
+            Click on the 3 dots in the top right corner (4) to see available actions.</p>
+
+            <h2 id="translating">Translating</h2>
+            <p>Task Closer uses an implementation of gettext to provide multilanguage support.</p>
+            <p>Gettext uses ".po" and ".mo" files to hold the translations.<br>
+                ".po" (Portable Object) is a text file that includes the original texts and the translations, this file can be used for editing.<br>
+                ".mo" (Machine Object) files are compiled and are easy for computers to read, this file is used by Task Closer to provide translations.
+            </p>
+
+            <p>Follow these steps to translate Task Closer</p>
+            <ol>
+                <li>"template.po" file is provided in the "lang" folder</li>
+                <li>Edit this file with a PO file editor</li>
+                <li>Compile .mo file with your PO file editor, save your file in the following format languagecode.mo (example: en.po, fr.po, it.po etc.)</li>
+                <li>Copy the .mo file in the "lang/overrides" folder of your Task Closer installation.</li>
+                <li>Go to System > Settings > Localisation and add your new language, use the 2 letters language code for the code field.</li>
+            </ol>
+
+            <p>To edit .po files you can use <a href="http://poedit.net/">Poedit</a>, a simple to use and free application.</p>
+
+            <p><b>Notice:</b> As new features are added to Task Closer, new text strings might need translating, whith each new update, if new strings available, will be added to the template file. You can import them with Poedit in your language file.</p>
+            <p><b>Notice:</b> Place all translation files in the "lang/overrides" folder. Placing them directly into the "lang" folder might get overwritten.</p>
+            <p><b>Notice:</b> Language code must be the same as the filename (example: if you have the file fr.mo the code is fr).</p>
+            <p><b>Notice:</b> If the system does not find the required string in your translation file it will use the default English for that string.</p>
+            <p><b>Notice:</b> Users/Admins can set different languages, if preffered, which overrides the default language set in Settings > Localisation.</p>
+
+            <br><br><br>
+            <blockquote>
+              <p>Many thanks to Abdullah Almsaeed for the beautiful AdminLTE theme.</p>
+            </blockquote>
+            </div>
+    </body>
+</html>
